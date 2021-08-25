@@ -25,7 +25,7 @@ RUN apt-get -q update && apt-get -y install gnupg2 wget
 
 # Add Aptly repository
 RUN echo "deb http://repo.aptly.info/ squeeze main" > /etc/apt/sources.list.d/aptly.list
-RUN wget -qO - https://www.aptly.info/pubkey.txt | sudo apt-key add -
+RUN wget -qO - https://www.aptly.info/pubkey.txt | apt-key add -
 
 # Add Nginx repository
 RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
