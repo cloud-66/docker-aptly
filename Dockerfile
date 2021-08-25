@@ -25,12 +25,15 @@ RUN apt-get -q update && apt-get -y install gnupg2
 
 # Add Aptly repository
 RUN echo "deb http://repo.aptly.info/ squeeze main" > /etc/apt/sources.list.d/aptly.list
-RUN apt-key adv --no-tty --keyserver pool.sks-keyservers.net --recv-keys ED75B5A4483DA07C
+RUN wget -qO - https://www.aptly.info/pubkey.txt | sudo apt-key add -
 
 # Add Nginx repository
-RUN echo "deb http://nginx.org/packages/$DIST/ $RELEASE nginx" > /etc/apt/sources.list.d/nginx.list
-RUN echo "deb-src http://nginx.org/packages/$DIST/ $RELEASE nginx" >> /etc/apt/sources.list.d/nginx.list
-RUN apt-key adv --no-tty --keyserver pool.sks-keyservers.net --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+    | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null \
+RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+    http://nginx.org/packages/ubuntu `lsb_release -cs` nginx" \
+        | sudo tee /etc/apt/sources.list.d/nginx.list
+
 
 # Update APT repository
 RUN apt-get -q update
