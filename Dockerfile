@@ -21,7 +21,7 @@ ENV DIST=ubuntu
 ENV RELEASE=focal
 
 # Install gnupg2
-RUN apt-get -q update && apt-get -y install gnupg2 wget curl sudo lsb_release
+RUN apt-get -q update && apt-get -y install gnupg2 wget curl sudo lsb-release
 
 # Add Aptly repository
 RUN echo "deb http://repo.aptly.info/ squeeze main" > /etc/apt/sources.list.d/aptly.list
